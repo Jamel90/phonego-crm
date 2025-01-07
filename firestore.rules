@@ -1,0 +1,218 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Fonctions utilitaires
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && 
+        (getUserData().role == 'SUPER_ADMIN' || getUserData().role == 'super_admin');
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (getUserData().role == 'ADMIN' || isSuperAdmin());
+    }
+
+    function belongsToStore(storeId) {
+      return isAuthenticated() && getUserData().storeId == storeId;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Collections au niveau racine
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) || isSuperAdmin();
+      allow list: if isAdmin() || isSuperAdmin();
+    }
+
+    match /stores/{storeId} {
+      allow read: if belongsToStore(storeId) || isAdmin() || isSuperAdmin();
+      allow write: if isAdmin() || isSuperAdmin();
+      allow list: if isAdmin() || isSuperAdmin();
+
+      // Collections imbriquées dans les stores
+      match /products/{productId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /orders/{orderId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /customers/{customerId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /manufacturers/{manufacturerId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      // Collections d'inventaire
+      match /inventory/{itemId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /suppliers/{supplierId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      // Réparations et tâches liées au magasin
+      match /repairs/{repairId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow create: if belongsToStore(storeId) || isAdmin() && 
+          request.resource.data.price is number &&
+          request.resource.data.deposit is number &&
+          request.resource.data.deposit <= request.resource.data.price &&
+          request.resource.data.deposit >= 0 &&
+          request.resource.data.paymentMethod is string &&
+          request.resource.data.remainingAmount == request.resource.data.price - request.resource.data.deposit;
+        allow update: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /tasks/{taskId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      // Gestion des imprimantes
+      match /printers/{printerId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow write: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+
+      match /printer_history/{historyId} {
+        allow read: if belongsToStore(storeId) || isAdmin();
+        allow create: if belongsToStore(storeId) || isAdmin();
+        allow list: if belongsToStore(storeId) || isAdmin();
+      }
+    }
+
+    // Collections administratives
+    match /admin/{document=**} {
+      allow read, write: if isSuperAdmin();
+      allow list: if isSuperAdmin();
+    }
+
+    // Collections de gestion
+    match /plans/{planId} {
+      allow read: if isAuthenticated();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /promotions/{promoId} {
+      allow read: if isAuthenticated();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /invoices/{invoiceId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if isAuthenticated();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /notifications/{notifId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /notification_templates/{templateId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /automatic_alerts/{alertId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /invoice_settings/{settingId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /subscriptions/{subId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /analytics/{docId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    // Collections globales
+    match /repairs/{repairId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      allow list: if isAuthenticated();
+    }
+
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      allow list: if isAuthenticated();
+    }
+
+    match /manufacturers/{manufacturerId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+      allow list: if isAuthenticated();
+    }
+
+    match /suppliers/{supplierId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+      allow list: if isAuthenticated();
+    }
+
+    // Collections de statistiques et métriques
+    match /metrics/{metricId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    match /stats/{statId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+
+    // Collection de clients globale
+    match /clients/{clientId} {
+      allow read: if isAdmin();
+      allow write, list: if isSuperAdmin();
+    }
+  }
+}

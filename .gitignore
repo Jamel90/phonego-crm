@@ -1,0 +1,77 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebaserc
+firebase-export-*
+
+# Testing
+/coverage
+.nyc_output
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+.temp
+.cache
+.eslintcache
+
+# Vue.js
+.nuxt
+.nitro
+.output
+.gen
+
+# System Files
+Thumbs.db
+desktop.ini
+
+# Backup files
+PhoneGoCRM_backup_20241210.tar.gz
+*.tar.gz
+
+# Optional
+*.bak
+*.swp
+*~

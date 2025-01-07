@@ -1,0 +1,114 @@
+/* Styles de base */
+.max-width-200 {
+  max-width: 200px;
+}
+
+.max-width-150 {
+  max-width: 150px;
+}
+
+/* Styles des cartes */
+.stat-card {
+  height: 100%;
+  transition: transform 0.2s;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Gradients */
+.gradient-primary {
+  background: linear-gradient(135deg, #6B8DE3 0%, #7C4DFF 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #56AB2F 0%, #A8E063 100%);
+}
+
+.gradient-info {
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+}
+
+.gradient-warning {
+  background: linear-gradient(135deg, #FF8008 0%, #FFC837 100%);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #834d9b 0%, #d04ed6 100%);
+}
+
+/* Graphiques et statistiques */
+.chart-card {
+  height: 100%;
+  border-radius: 12px;
+}
+
+.chart {
+  height: 400px;
+  width: 100%;
+}
+
+/* Liste des réparations */
+.repair-item {
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  margin: 4px 0;
+}
+
+.repair-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Nouveaux styles pour les composants détaillés */
+.detailed-stats {
+  padding: 20px;
+}
+
+.detailed-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.top-repairs-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.revenue-chart-container {
+  min-height: 400px;
+  padding: 16px;
+}
+
+/* Styles pour les filtres */
+.filters-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Styles responsifs */
+@media (max-width: 960px) {
+  .detailed-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart {
+    height: 300px;
+  }
+}
+
+/* Animations */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

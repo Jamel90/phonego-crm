@@ -1,0 +1,315 @@
+/* Global Styles */
+:root {
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --secondary: #94a3b8;
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+  --info: #3b82f6;
+  
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --bg-surface: #2a2a2a;
+  --bg-hover: #333333;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-disabled: #a0a0a0;
+  
+  --border-light: rgba(255, 255, 255, 0.15);
+  --border-dark: rgba(0, 0, 0, 0.2);
+  
+  --border-radius-lg: 12px;
+  --border-radius-md: 8px;
+  --border-radius-sm: 4px;
+  --transition-speed: 0.2s;
+}
+
+/* Typography System */
+.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.text-subtitle-1 {
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+.text-subtitle-2 {
+  font-size: 0.8125rem;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+.text-body-1 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.text-body-2 {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.text-overline {
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
+/* Responsive Typography */
+@media (max-width: 960px) {
+  .text-h1 { font-size: 1.75rem; }
+  .text-h2 { font-size: 1.5rem; }
+  .text-h3 { font-size: 1.25rem; }
+  .text-h4 { font-size: 1.125rem; }
+  .text-h5 { font-size: 1rem; }
+  .text-h6 { font-size: 0.875rem; }
+}
+
+@media (max-width: 600px) {
+  .text-h1 { font-size: 1.5rem; }
+  .text-h2 { font-size: 1.25rem; }
+  .text-h3 { font-size: 1.125rem; }
+  .text-h4 { font-size: 1rem; }
+  .text-h5 { font-size: 0.875rem; }
+  .text-h6 { font-size: 0.8125rem; }
+}
+
+/* Cards */
+.card-hover {
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.25);
+}
+
+.stats-card {
+  background: linear-gradient(45deg, var(--bg-surface), var(--bg-secondary));
+}
+
+/* Tables */
+.table-header {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+  border-radius: var(--border-radius-lg);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.table-row:hover {
+  background-color: var(--bg-hover);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: background-color var(--transition-speed);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Actions buttons */
+.v-btn.v-btn--icon.v-btn--variant-text {
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.v-btn.v-btn--icon.v-btn--variant-text:hover {
+  opacity: 1;
+  background-color: rgba(var(--v-theme-surface-variant), 0.08);
+}
+
+.v-btn.v-btn--icon.v-btn--variant-text.v-btn--color-primary {
+  color: rgb(var(--v-theme-primary));
+}
+
+.v-btn.v-btn--icon.v-btn--variant-text.v-btn--color-error {
+  color: rgb(var(--v-theme-error));
+}
+
+/* Actions container */
+.actions-container {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 80px;
+}
+
+/* Form Styles */
+.input-field {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  color: var(--text-primary);
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: var(--warning);
+  color: var(--bg-primary);
+}
+
+.status-in-progress {
+  background-color: var(--info);
+  color: var(--text-primary);
+}
+
+.status-completed {
+  background-color: var(--success);
+  color: var(--text-primary);
+}
+
+/* Chips pour status et priorité */
+.status-chip,
+.priority-chip {
+  min-width: 100px;
+  justify-content: center;
+  font-weight: 500;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-chip:hover,
+.priority-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Menus déroulants */
+.v-menu .v-list {
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: rgb(var(--v-theme-surface));
+  border: 1px solid rgba(var(--v-border-color), 0.05);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.v-menu .v-list-item {
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.v-menu .v-list-item:hover {
+  background-color: rgba(var(--v-theme-primary), 0.1);
+}
+
+.v-menu .v-list-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Utility Classes */
+.elevation-1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.elevation-2 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+  border-radius: var(--border-radius-lg);
+}
+
+.transition-all {
+  transition: all var(--transition-speed);
+}
+
+/* Layout */
+.content-wrapper {
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stat-card {
+    width: 48%;
+    margin: 1%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+/* Animations de transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
