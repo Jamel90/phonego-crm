@@ -125,10 +125,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useCustomerStore } from '@/stores/customer'
 import { useManufacturerStore } from '@/stores/manufacturer'
-import { useRepairIssuesStore } from '@/stores/repair-issues'
+import { repairIssuesService } from '@/services/repair-issues.service'
 
 const props = defineProps({
   modelValue: {
@@ -146,12 +146,25 @@ const emit = defineEmits(['update:modelValue'])
 // Stores
 const customerStore = useCustomerStore()
 const manufacturerStore = useManufacturerStore()
-const repairIssuesStore = useRepairIssuesStore()
 
 // État local
 const valid = ref(false)
 const form = ref(null)
 const formData = ref({ ...props.modelValue })
+const availableIssues = ref([])
+
+// Charger les problèmes disponibles
+const loadIssues = async () => {
+  try {
+    const issues = await repairIssuesService.getIssues()
+    availableIssues.value = issues.map(issue => ({
+      name: issue.name,
+      ...issue
+    }))
+  } catch (error) {
+    console.error('Erreur lors du chargement des problèmes:', error)
+  }
+}
 
 // Données disponibles
 const customers = computed(() => customerStore.customers)
@@ -159,7 +172,6 @@ const manufacturers = computed(() => manufacturerStore.manufacturers)
 const sortedManufacturers = computed(() => {
   return [...manufacturers.value].sort((a, b) => a.name.localeCompare(b.name))
 })
-const availableIssues = computed(() => repairIssuesStore.issues)
 const priorities = ['Basse', 'Moyenne', 'Haute']
 
 // Méthodes
@@ -183,6 +195,11 @@ watch(formData, (newValue) => {
 watch(() => props.modelValue, (newValue) => {
   formData.value = { ...newValue }
 }, { deep: true })
+
+// Charger les données au montage
+onMounted(() => {
+  loadIssues()
+})
 
 // Exposer les méthodes nécessaires
 defineExpose({
